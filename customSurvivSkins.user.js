@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Free Custom Surviv.io Skins and Mods (FREE SURVIV GOLD PASS #7 )
+// @name         Free Custom Surviv.io Skins and Mods (FREE SURVIV GOLD PASS #8 )
 // @namespace    https://github.com/notKaiAnderson/
-// @version      1.3.1
+// @version      1.3.2
 // @description   a free and purely cosmetic script that lets you use custom skins during games, it even lets you make your own skins!
 // @author       preacher
 // @match        *://surviv.io/*
@@ -45,10 +45,8 @@ window.SkinRules = {};
 window.FistsRules = {};
  
  
- 
- 
 window.skinsArr = ["outfitDragonTails", "outfitCosmicBlue", "outfitJuleVerny", "outfitNorseCode", "outfitDigiturt", "outfitStreetArt",
-  "outfitGhoulFire", "outfitGaudisque", "outfitMelonWater", "outfitStarryNight",
+  "outfitGhoulFire", "outfitGaudisque", "outfitMelonWater", "outfitStarryNight", "outfitEyes-T",
   "outfitBlueZone", "outfitKingGalaxy", "outfitBraaains", "outfitILavaYou", "outfitStumpd","outfitEggnite", "outfitTiki", "outfitMachoLucha2", "outfitCalaca", "outfitTipTheScales", "outfitAvocadoh",  "outfitChromesis", "outfitBoet","outfitFireball", "outfitMagmatic", "outfitPurpleMecha", "outfitMecha", "outfitDiamondy", "outfitAstronaut","outfitLasrDisk", "outfitCrusader", "outfitBlueMecha", "outfitSnowman" , "outfitChritstmasTree", "outfitGrinch", "outfitGingerbread", "outfitEventHorizon", "outfitMod", "outfitDev",,"outfitMojo", "outfitGiraffe", "outfitUrbanCamo", "outfitBlueLava", "outfitMango", "outfitBengal", "outfitUnderbrush", "outfitViper", "outfitGeometric", "outfitMilitary", "outfitClaymore", "outfitSunset", "outfitSplotchfest", "outfitRedLeader"];
  
 window.handsArr = [];

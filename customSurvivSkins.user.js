@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Free Custom Surviv.io Skins and Mods (FREE SURVIV GOLD PASS #8 )
 // @namespace    https://github.com/notKaiAnderson/
-// @version      1.3.2
+// @version      1.3.3
 // @description   a free and purely cosmetic script that lets you use custom skins during games, it even lets you make your own skins!
 // @author       preacher
 // @match        *://surviv.io/*
@@ -34,6 +34,11 @@
  
 // make console.log() work
 console.log = console.info;
+
+
+function ee(value) {
+  console.log(value)
+}
  
 // global declarartion
 window.gunskins = "";
@@ -103,38 +108,37 @@ for (key in window.hands) {
         handsArr.push(key)
     }
 }
- 
+
 load();
- 
- 
- 
- 
+
 // _SKIN and _Hand must be a String 
 // ex: skins["outfitFireball"]
  
 window.assignSkin = function (_SKIN) {
- 
-    if (!skins[_SKIN]) return _SKIN + "doesn't exist"
- 
+  
+    if(!skins[_SKIN]) return; 
+    
     skins.outfitBase.accessory = {}
     skins.outfitBase.accessory.sprite = "";
  
     Object.assign(skins.outfitBase, skins[_SKIN]);
  
-    return _SKIN
+    removeBorder();
+    addBorder(_SKIN);
 }
  
 window.assignHand = function (_HAND) {
- 
-    if (!hands[_HAND]) return _HAND + "doesn't exist"
+  
+    if(!hands[_HAND]) return; 
  
     hands.fists.handSprites = {};
     hands.fists.handSprites.spriteL = ""
     hands.fists.handSprites.spriteR = ""
  
     Object.assign(hands.fists, hands[_HAND]);
- 
-    return _HAND;
+
+    removeBorder();
+    addBorder(_HAND);
 }
  
 window.assignGuns = function (_GUNSKIN) {
@@ -156,6 +160,9 @@ window.assignGuns = function (_GUNSKIN) {
         if (ee.worldImg.tint == 16777215) return
         ee.worldImg.tint = 16777215;
     })
+    
+    removeBorder();
+    addBorder(_GUNSKIN);
  
 }
  
@@ -170,16 +177,6 @@ injectCss();
  
  
 function load() {
-    // turn string into camel case
-    String.prototype.toCamelCase = function () {
-        return this.replace(/\s(.)/g, function ($1) {
-            return $1.toUpperCase();
-        })
-            .replace(/\s/g, "")
-            .replace(/^(.)/, function ($1) {
-                return $1.toLowerCase();
-            });
-    };
     // UI stuff
     let ehtml = `
         <div  class="custom-wrapper-random"> 
@@ -261,13 +258,6 @@ function load() {
     const skinItems = document.querySelector(".skins");
     const fistsItems = document.querySelector(".fists");
     const gunsItems = document.querySelector(".guns");
-    skinItems.addEventListener("click", applySkin); // apply skins and border on click
-    skinItems.innerHTML = "";
-    fistsItems.addEventListener("click", applyFists);
-    fistsItems.innerHTML = "";
-    gunsItems.addEventListener("click", applyGuns);
-    gunsItems.innerHTML = "";
-  
  
 //       (function() {
 //   skins.outfitDonut = {}
@@ -284,7 +274,7 @@ function load() {
         skinsArr.forEach((obj) => {
             console.log(obj, skins[obj])
             let eee = `
-										<div class="skin-item" id="${obj}">
+										<div class="skin-item" id="${obj}" onclick="assignSkin('${obj}')">
 												<img src="img/loot/${skins[obj].lootImg.sprite.replace(
                 "img",
                 "svg"
@@ -303,7 +293,7 @@ function load() {
         handsArr.forEach((obj) => {
             console.log(obj, hands[obj])
             let eee = `
-										<div class="skin-item" id="${obj}">
+										<div class="skin-item" id="${obj}" onclick="assignHand('${obj}')">
 												<img src="img/loot/${hands[obj].lootImg.sprite.replace(
                 "img",
                 "svg"
@@ -318,11 +308,9 @@ function load() {
         });
         fistsItems.innerHTML = fistsHtml;
  
- 
- 
         Object.values(gunsArr).forEach(obj => {
             let eee = `
-            <div class="skin-item" id="${obj.name}">
+            <div class="skin-item" id="${obj.name}" onclick="assignGuns('${obj.name}')">
                 <img src="${obj.long}" class="skin-img" />
                 <h4 class="skin-name">${obj.name}</h4>
             </div>
@@ -336,58 +324,17 @@ function load() {
     updatehtml();
 }
  
- 
- 
-// Skin Rules
-function applySkin(e) {
-    if (SkinRules.hasOwnProperty(e.target.id)) {
-        SkinRules[e.target.id]();
-        skinRemoveBorder();
-        e.target.className += " active";
-        console.log(SkinRules[e.target.id]);
-    } else if (SkinRules.hasOwnProperty(e.target.parentElement.id)) {
-        SkinRules[e.target.parentElement.id]();
-        skinRemoveBorder();
-        e.target.parentElement.className += " active";
-        console.log(SkinRules[e.target.parentElement.id]);
-    }
-}
- 
-// Fists Rules
-function applyFists(e) {
-    if (FistsRules.hasOwnProperty(e.target.id)) {
-        FistsRules[e.target.id]();
-        skinRemoveBorder();
-        e.target.className += " active";
-        console.log(FistsRules[e.target.id]);
-    } else if (FistsRules.hasOwnProperty(e.target.parentElement.id)) {
-        FistsRules[e.target.parentElement.id]();
-        skinRemoveBorder();
-        e.target.parentElement.className += " active";
-        console.log(FistsRules[e.target.parentElement.id]);
-    }
-}
- 
- 
-function applyGuns(e) {
-    if (gunsArr.hasOwnProperty(e.target.id)) {
-        assignGuns(gunsArr[e.target.id]);
-        skinRemoveBorder();
-        e.target.className += " active";
-        console.log(gunsArr[e.target.id]);
-    } else if (gunsArr.hasOwnProperty(e.target.parentElement.id)) {
-        assignGuns(gunsArr[e.target.parentElement.id]);
-        skinRemoveBorder();
-        e.target.parentElement.className += " active";
-        console.log(assignGuns(gunsArr[e.target.parentElement.id]));
-    }
-}
 // removeBorder
-function skinRemoveBorder() {
+function removeBorder() {
     skinItem = document.querySelectorAll(".skin-item");
     skinItem.forEach((item) => {
         item.classList.remove("active");
     });
+}
+
+function addBorder(id) {
+  let ele = document.querySelector(`#${id}`)
+  ele.className += " active";
 }
  
  

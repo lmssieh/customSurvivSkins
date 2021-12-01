@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Free Custom Surviv.io Skins and Mods (FREE SURVIV GOLD PASS #8 )
 // @namespace    https://github.com/notKaiAnderson/
-// @version      1.3.3
+// @version      1.3.5
 // @description   a free and purely cosmetic script that lets you use custom skins during games, it even lets you make your own skins!
 // @author       preacher
 // @match        *://surviv.io/*
@@ -23,6 +23,7 @@
 // @grant        none
 // @icon         https://i.imgur.com/jgHdTYA.png
 // @run-at       document-end
+// @license      MIT
 // ==/UserScript==
  
 /*** contributors
@@ -32,24 +33,24 @@
 ***/
  
 //*************** Michal2SAB's code
-
+ 
 let webpackR = undefined;
-
+ 
 const func = {webpack_inject: (w, e, get) => {webpackR = get.bind(this)}};
     
 if (typeof webpackJsonp === 'function') webpackJsonp([0], func, ["webpack_inject"])
 else webpackJsonp.push([["webpack_inject"],func,[["webpack_inject"]]]);
-
+ 
 //*************** don't edit code above ^
-
+ 
 // make console.log() work
 console.log = console.info;
-
+ 
 // global declarartion
 const skins = webpackR("63d67e9d");
 const hands = webpackR("ccb6ad93");
 const guns = webpackR("ad1c4e70");
-
+ 
 // utils
 const getEle = selector => document.querySelector(selector);
 const getAllEle = selector => document.querySelectorAll(selector);
@@ -58,10 +59,10 @@ const addBorder = id => getEle(`#${id}`).classList.add('active')
 const injectCss = css => document.head.innerHTML += `<style>${css}</style>`;
 const imgToUrl = (type, img) => `https://surviv.io/img/${type}/${img.slice(0, -4)}.svg`;
 const backUpDeafultSkin = () => skins.defaultSkin = {...skins.outfitBase};
-
+ 
 // if you want to add a skin to the script add it below
-const skinsArr = ["defaultSkin", "outfitDragonTails", "outfitCosmicBlue", "outfitJuleVerny", "outfitNorseCode", "outfitDigiturt", "outfitStreetArt", "outfitGhoulFire", "outfitGaudisque", "outfitMelonWater", "outfitStarryNight", "outfitEyes-T", "outfitBlueZone", "outfitKingGalaxy", "outfitBraaains", "outfitILavaYou", "outfitStumpd","outfitEggnite", "outfitTiki", "outfitMachoLucha2", "outfitCalaca", "outfitTipTheScales", "outfitAvocadoh",  "outfitChromesis", "outfitBoet","outfitFireball", "outfitMagmatic", "outfitPurpleMecha", "outfitMecha", "outfitDiamondy", "outfitAstronaut","outfitLasrDisk", "outfitCrusader", "outfitBlueMecha", "outfitSnowman" , "outfitChritstmasTree", "outfitGrinch", "outfitGingerbread", "outfitEventHorizon", "outfitMod", "outfitDev","outfitMojo", "outfitGiraffe", "outfitUrbanCamo", "outfitBlueLava", "outfitMango", "outfitBengal", "outfitUnderbrush", "outfitViper", "outfitGeometric", "outfitMilitary", "outfitClaymore", "outfitSunset", "outfitSplotchfest", "outfitRedLeader"];
-
+const skinsArr = ["defaultSkin", "outfitChewieCheese", "outfitSwords", "outfitScarween", "outfitH2Oh", "outfitSoapPods", "outfitTomatoandCheese", "outfitHowPita-ful", "outfitHopelessRamen-tic",  "outfitColorPalette", "outfitDragonTails", "outfitCosmicBlue", "outfitJuleVerny", "outfitNorseCode", "outfitDigiturt", "outfitStreetArt", "outfitGhoulFire", "outfitGaudisque", "outfitMelonWater", "outfitStarryNight", "outfitEyes-T", "outfitBlueZone", "outfitKingGalaxy", "outfitBraaains", "outfitILavaYou", "outfitStumpd","outfitEggnite", "outfitTiki", "outfitMachoLucha2", "outfitCalaca", "outfitTipTheScales", "outfitAvocadoh",  "outfitChromesis", "outfitBoet","outfitFireball", "outfitMagmatic", "outfitPurpleMecha", "outfitMecha", "outfitDiamondy", "outfitAstronaut","outfitLasrDisk", "outfitCrusader", "outfitBlueMecha", "outfitSnowman" , "outfitChritstmasTree", "outfitGrinch", "outfitGingerbread", "outfitEventHorizon", "outfitMod", "outfitDev","outfitMojo", "outfitGiraffe", "outfitUrbanCamo", "outfitBlueLava", "outfitMango", "outfitBengal", "outfitUnderbrush", "outfitViper", "outfitGeometric", "outfitMilitary", "outfitClaymore", "outfitSunset", "outfitSplotchfest", "outfitRedLeader"];
+ 
 const handsArr = [];
 // add all the availaible surviv hand skins to handsArr
 for (key in hands) {
@@ -88,38 +89,31 @@ const gunsArr = {
     short: "https://surviv.io/img/guns/gun-short-04.svg",
   },
 }
-
+ 
 // _SKIN and _Hand must be a String 
 // ex: skins["outfitFireball"]
  
-const assignSkin = _SKIN => {
-  
+window.assignSkin = _SKIN => {
     if(!skins[_SKIN]) return; 
     
-    skins.outfitBase.accessory = {}
-    skins.outfitBase.accessory.sprite = "";
-    
+    skins.outfitBase.accessory = {sprite: ""}    
     Object.assign(skins.outfitBase, skins[_SKIN]);
  
     removeBorder();
     addBorder(_SKIN);
 }
  
-const assignHand = _HAND => {
-  
+window.assignHand = _HAND => {
     if(!hands[_HAND]) return; 
  
-    hands.fists.handSprites = {};
-    hands.fists.handSprites.spriteL = ""
-    hands.fists.handSprites.spriteR = ""
- 
+    hands.fists.handSprites = {spriteL: "", spriteR: ""};
     Object.assign(hands.fists, hands[_HAND]);
-
+ 
     removeBorder();
     addBorder(_HAND);
 }
  
-const assignGuns = _GUNSKIN => {
+window.assignGuns = _GUNSKIN => {
  
     // guns = webpackR("ad1c4e70");
     // loop through all the guns and change their skins
@@ -142,30 +136,31 @@ const assignGuns = _GUNSKIN => {
     removeBorder();
     addBorder(_GUNSKIN);
 }
-
+ 
 const css = `.active { color: green; border: 2px solid #668e38;} .content, .pass-body-container  {display: none;}; .skin-name {margin: 10px;} .tab {display: flex !important;} .active-tab {display: block !important} .contents {display: flex; flex-direction: column; width: 100%; overflow-y: scroll; height: 100%;text-align: center; box-sizing: border-box;} .container {width: 100%; flex: 1 0 auto;} .skins, .fists, .guns, .crates {display: flex; box-sizing: border-box; flex-wrap: wrap} .trees img {max-height: auto; max-width: 100%} .maps {display: flex; box-sizing: border-box; flex-wrap: wrap} .skin-item, .map-item {flex-grow: 1; flex-basis: 25%; position: relative; cursor: pointer; box-sizing: border-box; padding: 10px 0;} .tabs {display: flex !important;} .tab {display: inline-block !important; flex-grow: 1; padding: 10px; background: rgba(0, 0, 0, 0.28); cursor: pointer; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;} #start-menu {padding: 0;} #social-share-block-wrapper {display: none;} .tab.active-tab {background: #000;} .footer {background-color: #000; padding: 10px; border-top: 1px solid #ddd; flex-shrink: 0;} .footer p {margin:0; text-align: center;} .tab.icon { padding: 0; display: flex !important; justify-content: center; align-items: center;} .svg-icon { width: 1.5em; height: 1.5em; } .svg-icon path, .svg-icon polygon, .svg-icon rect { fill: #ffffff; } .svg-icon circle { stroke: #ffffff; stroke-width: 1;} .container.set .modal-settings-item {padding: 10px 0; } .btn-custom {-webkit-animation-name:custom-pulse;-webkit-animation-duration:5s;border-bottom:4px solid #00448a}@-webkit-keyframes custom-pulse{from{background-color:#8a9e69;border-bottom-color:#8a9e69;-webkit-box-shadow:0 0 9px #8a9e69}25%{background-color:#318585;border-bottom-color:#208686;-webkit-box-shadow:0 0 18px #318585}75%{background-color:#675fe0;border-bottom-color:#312b8a;-webkit-box-shadow:0 0 18px #675fe0}to{background-color:#8a9e69;border-bottom-color:#8a9e69;-webkit-box-shadow:0 0 9px #8a9e69}}#deleteSkinItem { position: absolute; right: 2px;} .btn-submit { margin-left: 10px; padding: 5px 10px; font-size: 1.3rem; background: #191616; color: #fff; border: solid 1px #fff; border-radius: 4px;} #addSkinName { font-size: 1.5rem;} .custom-wrapper-random { width: 753.89px; height: 415.06px; border-radius: 10.27px; box-sizing: border-box; max-height: unset; display: -webkit-box; display: flex;} #start-menu {padding: 0 !important;} .disable-the-script { position: absolute; bottom: -10%; text-align: center; background: #000; width: 100%; } #start-menu { position: relative; }`
-
+ 
 injectCss(css);
 loadMainScript();
  
 function loadMainScript() {
-
+ 
     backUpDeafultSkin();
-
+ 
     const passBody = getEle('.pass-body-container');
-
+ 
     const disableScripthtml = `
         <div class="disable-the-script">
         <label>Disable the script</label>
             <input type="checkbox" id="disableTheScript">    
         </div>`;
-
+ 
     const startMenuEle = getEle("#start-menu");
     startMenuEle.insertAdjacentHTML("afterend", disableScripthtml);
     
     const customSkinsWrapperHtml = `<div class="custom-wrapper-random">)</div>`;
     startMenuEle.insertAdjacentHTML("beforeend", customSkinsWrapperHtml);
-    getEle(".custom-wrapper-random").innerHTML = `
+    customWrapperEle = getEle(".custom-wrapper-random");
+    customWrapperEle.innerHTML = `
         <div class="contents">
             <div class="tabs">
                 <div class="tab" style="flex-basis: 80%;">Select Skins</div>
@@ -197,7 +192,7 @@ function loadMainScript() {
                 </p>
             </div>
 		</div>`;
-
+ 
     // disable the script
     getEle('#disableTheScript').addEventListener('click',(e) => {  
         if (e.target.checked){
@@ -208,7 +203,7 @@ function loadMainScript() {
             customWrapperEle.style.display = "block";
         }
     })
-
+ 
     // Tabs
     const tabLinks = getAllEle(".tab");
     const tabContents = getAllEle(".content");
@@ -227,15 +222,32 @@ function loadMainScript() {
     
     generateHtml();
 }
-
+ 
 getEle('#disableTheEndGameScreen').addEventListener('change', (e) => {
+    // if checked add option to hide end screen, refresh to remove it
     if (e.target.checked){
-        // if checked add code to hide end screen here
-    } else if(!e.target.checked) {
-        // if not show end screen
-    }
+        for(;;) {
+            let uiStatsHeaderEle = getEle("#ui-stats-header");
+            if(!uiStatsHeaderEle) break;
+            let shodowDom = uiStatsHeaderEle.attachShadow({mode:'closed'});
+        
+            const inputEle = document.createElement("input");
+            inputEle.type = "button"; inputEle.value = "HIDE";
+        
+            shodowDom.appendChild(inputEle);
+        
+            inputEle.onclick = ()=> {
+            getEle("#ui-stats").style.display="none";
+            getEle("#ui-stats-ad-container-desktop").style.display="none";
+            
+            const ev10 = document.addEventListener('keypress', e =>{
+                getEle("#ui-stats").style.display="block";
+                document.removeEventListener(ev10);})};
+            break;
+        }        
+    } 
 })
-
+ 
 function generateHtml() {
     const generateSkinTemplate = (arr, obj, func) => {
         const isGunSkins = arr.constructor == Object;
@@ -250,11 +262,11 @@ function generateHtml() {
         });
         return html;
     }
-
+ 
     getEle(".skins").innerHTML = generateSkinTemplate(skinsArr, skins, 'assignSkin');
-    getEle(".fists").innerHTML = generateSkinTemplate(handsArr, hands, 'assignHand');
+    getEle(".fists").innerHTML = generateSkinTemplate(handsArr.reverse(), hands, 'assignHand');
     getEle(".guns").innerHTML = generateSkinTemplate(gunsArr, null, 'assignGuns');
 }
-
+ 
 // make variables accessible in the console
 window.public = {skins, hands, guns, skinsArr, handsArr, gunsArr}
